@@ -39,7 +39,8 @@ export default function Layout() {
         drawerType: 'permanent',
         drawerStyle: {
           width: DrawerTheme.width,
-          backgroundColor: theme.background,
+          backgroundColor: theme.surface,
+          borderRightColor: 'transparent',
         },
         drawerLabelStyle: {
           fontSize: DrawerTheme.labelFontSize,
@@ -55,7 +56,7 @@ export default function Layout() {
       }}
     >
       <Drawer.Screen
-        name="dashboard"
+        name="index"
         options={{
           drawerLabel: 'Dashboard',
         }}

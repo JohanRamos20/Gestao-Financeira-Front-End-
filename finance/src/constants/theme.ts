@@ -31,7 +31,7 @@ export const Colors = {
     border: '#2a2a36',
     primary: '#9980ff',
     primaryDark: '#1e1060',
-    primarySoft: '#2e2060',
+    primarySoft: '#443584',
     primaryMuted: '#9980ff',
     green: '#97c459',
     greenSoft: '#1a2a1a',
@@ -83,7 +83,7 @@ export const Spacing = {
 } as const;
 
 export const DrawerTheme = {
-  width: 300,
+  width: 280,
   itemRadius: 8,
   labelFontSize: 16,
   labelFontWeight: '600',
