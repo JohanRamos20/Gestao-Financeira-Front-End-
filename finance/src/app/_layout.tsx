@@ -40,7 +40,7 @@ export default function Layout() {
         drawerStyle: {
           width: DrawerTheme.width,
           backgroundColor: theme.surface,
-          borderRightColor: 'transparent',
+          borderRightColor: theme.border,
         },
         drawerLabelStyle: {
           fontSize: DrawerTheme.labelFontSize,

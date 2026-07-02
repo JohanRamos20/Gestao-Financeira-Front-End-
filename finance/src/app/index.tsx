@@ -1,9 +1,16 @@
 import { useTheme } from '@/hooks/use-theme';
 import { useMemo } from 'react';
-import { View, StyleSheet, Text, useColorScheme, Dimensions } from 'react-native'
+import { View, StyleSheet, Text, useColorScheme, Dimensions, Platform } from 'react-native'
 
 type Theme = ReturnType<typeof useTheme>
 const { width, height } = Dimensions.get('window')
+
+type GoalProps = {
+  name : string,
+  targetAmount: number,
+  savedAmount: number,
+}
+
 
 export default function DashboardScreen() {
   const scheme = useColorScheme();
@@ -54,8 +61,59 @@ export default function DashboardScreen() {
           </View>
         </View>
       </View>
+        <View style = {styles.containersRow}>
+          <View style = {styles.movementsContainer}>
+              <Text style = { styles.subtitle }>
+                Movimentações
+              </Text>
+            <Text style = { styles.containersText }>
+              Últimas transações
+            </Text>
+          </View>
+          <View style = {styles.goalContainer}>
+            <Text style = { styles.subtitle }>
+              Meta do mês
+            </Text>
+            <GoalLabel name='Teste' savedAmount={200} targetAmount={1000}/>
+            <GoalLabel name='Teste' savedAmount={500} targetAmount={1000}/>
+            <GoalLabel name='Teste' savedAmount={240} targetAmount={1000}/>
+            <GoalLabel name='Teste' savedAmount={46} targetAmount={1000}/>
+          </View>
+        </View>
     </View>  
     )
+}
+
+export function GoalLabel(props : GoalProps) {
+  const scheme = useColorScheme();
+  const theme = useTheme();
+  const styles = useMemo(() => makeStyles(theme), [scheme])
+
+  const percentage = props.savedAmount !== 0 ? (props.savedAmount/props.targetAmount) * 100 : 0
+  const clampedPercentage = Math.min(Math.max(percentage, 0), 100)
+
+  return (
+    <View style = { styles.containersColumn }>
+      <View style = { styles.containersRow }>
+        <Text style = { styles.containersText }>
+          {props.name}
+        </Text>
+        <View style = { styles.goalPercentage }>
+          <Text style = { styles.percentageText }>
+            {clampedPercentage.toFixed(0)}%
+          </Text>
+        </View>
+      </View>
+      <View style = { styles.emptyProgressBar }>
+        <View style = {[styles.fillProgressBar, {width: `${clampedPercentage}%`}]}/>
+      </View>
+      <Text style = { styles.descriptionText }>
+        R$ {props.savedAmount} guardados de R$ {props.targetAmount}
+      </Text>
+
+    </View>
+  )
+
 }
 
 const makeStyles = (theme : Theme) => StyleSheet.create({
@@ -63,7 +121,8 @@ const makeStyles = (theme : Theme) => StyleSheet.create({
     flex: 1,
     alignItems : 'center',
     backgroundColor: theme.background,
-    paddingTop: 40
+    paddingTop: 40,
+    gap: 30,
   },
   container: {
     backgroundColor: theme.primaryDark,
@@ -73,6 +132,73 @@ const makeStyles = (theme : Theme) => StyleSheet.create({
     padding: 25,
     gap: 30,
   },
+  containersRow: {
+    width: '95%',
+    flexDirection: 'row',
+    gap: 20
+  },
+  containersColumn: {
+    width: '95%',
+    flexDirection: 'column',
+    gap: 10
+  },
+  movementsContainer: {
+    backgroundColor: theme.surface,
+    width: '65%',
+    height: height * 0.43 ,
+    borderRadius: 30,
+    padding: 20,
+    gap: 5,
+    borderWidth: 1,
+    borderColor: theme.border
+  },
+  containersText:{
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: theme.text
+  },
+  goalContainer: {
+    overflow: 'hidden',
+    backgroundColor: theme.surface,
+    width: '33%',
+    height: height * 0.43 ,
+    borderRadius: 30,
+    padding: 20,
+    paddingRight: 0,
+    gap: 10,
+    borderWidth: 1,
+    borderColor: theme.border
+  },
+    goalPercentage: {
+    marginRight: -20,
+    marginLeft: 'auto',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 45,
+    height: 24,
+    borderRadius: 30,
+    backgroundColor: theme.primaryMuted
+  },
+  percentageText : {
+    fontSize: 13,
+    color: '#FFF',
+    fontWeight: 'bold',
+    alignContent: 'center'
+  },
+  
+  emptyProgressBar : {
+    height : 8,
+    borderRadius:4,
+    backgroundColor: theme.primarySoft,
+    overflow: 'hidden'
+  },
+
+  fillProgressBar : {
+    height : '100%',
+    borderRadius:4,
+    backgroundColor: theme.primaryMuted
+  },
+
   innerCollumn: {
     borderRadius: 8,
   },
@@ -102,14 +228,19 @@ const makeStyles = (theme : Theme) => StyleSheet.create({
     color: theme.text
   },
   subtitle: {
-    fontSize: 16,
-    color: theme.primary
+    fontSize: 14,
+    color: theme.primary,
+    fontWeight : 'bold'
   },
   balancetext: {
-    fontSize: 60,
+    fontSize: 55,
     fontWeight: 'bold',
     marginTop: -10,
     color: theme.text
+  },
+  descriptionText: {
+    marginTop : -5,
+    fontSize: 14,
+    color: theme.textSecondary,
   }
-
 })
