@@ -1,15 +1,29 @@
 import { useTheme } from '@/hooks/use-theme';
 import { useMemo } from 'react';
 import { View, StyleSheet, Text, useColorScheme, Dimensions, Platform } from 'react-native'
+import { FlatList } from 'react-native-gesture-handler';
 
 type Theme = ReturnType<typeof useTheme>
 const { width, height } = Dimensions.get('window')
 
 type GoalProps = {
+  id : string,
   name : string,
   targetAmount: number,
   savedAmount: number,
 }
+
+type GoalListProps = {
+  goals : GoalProps[]
+}
+
+const goalMock: GoalProps[] = [
+  { id: '1', name: 'Viagem', savedAmount: 800, targetAmount: 2000 },
+  { id: '2', name: 'Notebook novo', savedAmount: 1500, targetAmount: 4000 },
+  { id: '3', name: 'Reserva de emergência', savedAmount: 3000, targetAmount: 10000 },
+  { id: '4', name: 'Notebook novo', savedAmount: 1500, targetAmount: 4000 },
+  { id: '5', name: 'Reserva de emergência', savedAmount: 3000, targetAmount: 10000 },
+];
 
 
 export default function DashboardScreen() {
@@ -74,10 +88,7 @@ export default function DashboardScreen() {
             <Text style = { styles.subtitle }>
               Meta do mês
             </Text>
-            <GoalLabel name='Teste' savedAmount={200} targetAmount={1000}/>
-            <GoalLabel name='Teste' savedAmount={500} targetAmount={1000}/>
-            <GoalLabel name='Teste' savedAmount={240} targetAmount={1000}/>
-            <GoalLabel name='Teste' savedAmount={46} targetAmount={1000}/>
+            <GoalLists goals={goalMock}></GoalLists>
           </View>
         </View>
     </View>  
@@ -113,6 +124,29 @@ export function GoalLabel(props : GoalProps) {
 
     </View>
   )
+}
+
+export function GoalLists({goals} : GoalListProps) {
+  const scheme = useColorScheme();
+  const theme = useTheme();
+  const styles = useMemo(() => makeStyles(theme), [scheme]);
+
+  return (
+    <FlatList
+      data = {goals}
+      keyExtractor= {(item) => item.id}
+      renderItem={({item}) => (
+        <GoalLabel 
+          id={item.id}
+          name={item.name} 
+          savedAmount={item.savedAmount} 
+          targetAmount={item.targetAmount} 
+        />
+      )}
+      contentContainerStyle={styles.listContent}
+      showsVerticalScrollIndicator={false}
+      />
+  )
 
 }
 
@@ -123,6 +157,9 @@ const makeStyles = (theme : Theme) => StyleSheet.create({
     backgroundColor: theme.background,
     paddingTop: 40,
     gap: 30,
+  },
+  listContent : {
+    gap: 20
   },
   container: {
     backgroundColor: theme.primaryDark,
