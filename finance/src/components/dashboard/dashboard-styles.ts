@@ -24,7 +24,7 @@ export const makeDashboardStyles = (theme: Theme) => StyleSheet.create({
     gap: 30,
   },
   containersRow: {
-    width: '95%',
+    width: '100%',
     flexDirection: 'row',
     gap: 20,
   },
@@ -51,11 +51,11 @@ export const makeDashboardStyles = (theme: Theme) => StyleSheet.create({
   },
   transactionCard: {
     backgroundColor: theme.background,
-    width: '96%',
+    justifyContent: 'center',
+    width: '100%',
     height: '23%',
     borderRadius: 10,
     padding: 10,
-    paddingRight: 0,
   },
   containersText: {
     fontSize: 16,
@@ -148,4 +148,18 @@ export const makeDashboardStyles = (theme: Theme) => StyleSheet.create({
     fontSize: 14,
     color: theme.textSecondary,
   },
+  iconContainer: {
+    width : 40,
+    height: 40,
+    borderRadius: 10,
+    backgroundColor: theme.primarySoft,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconTextGroup: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  gap: 10,
+  flex: 1,
+  }
 });

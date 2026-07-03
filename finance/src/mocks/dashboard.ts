@@ -13,8 +13,8 @@ export const goalMock: Goal[] = [
 ];
 
 export const transacoesMock: Transaction[] = [
-  { id: '1', name: 'Supermercado', date: new Date('2026-07-02'), category: 'Alimentacao', value: 320, type: 'debit' },
-  { id: '2', name: 'Salario', date: new Date('2026-07-01'), category: 'Receita', value: 5200, type: 'credit' },
-  { id: '3', name: 'Internet', date: new Date('2026-06-23'), category: 'Servicos', value: 120, type: 'debit' },
-  { id: '4', name: 'Salario', date: new Date('2026-07-01'), category: 'Receita', value: 5200, type: 'credit' },
+  { id: '1', name: 'Supermercado', date: new Date('2026-07-02'), category: 'Food', value: 320, type: 'debit' },
+  { id: '2', name: 'Salario', date: new Date('2026-07-01'), category: 'Salary', value: 5200, type: 'credit' },
+  { id: '3', name: 'Internet', date: new Date('2026-06-23'), category: 'Expenses', value: 120, type: 'debit' },
+  { id: '4', name: 'Salario', date: new Date('2026-07-01'), category: 'Salary', value: 5200, type: 'credit' },
 ];
