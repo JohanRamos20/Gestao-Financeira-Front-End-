@@ -18,7 +18,7 @@ export const makeDashboardStyles = (theme: Theme) => StyleSheet.create({
   container: {
     backgroundColor: theme.primaryDark,
     width: '95%',
-    height: '45%',
+    height: '30%',
     borderRadius: 30,
     padding: 25,
     gap: 30,
@@ -29,9 +29,15 @@ export const makeDashboardStyles = (theme: Theme) => StyleSheet.create({
     gap: 20,
   },
   dashboardSectionsRow: {
-    width: '95%',
-    height: '45%',
+    width: '100%',
+    height: '100%',
     flexDirection: 'row',
+    gap: 20,
+  },
+  dashboardSectionsColumn: {
+    width: '95%',
+    height: '28%',
+    flexDirection: 'column',
     gap: 20,
   },
   containersColumn: {
@@ -109,6 +115,7 @@ export const makeDashboardStyles = (theme: Theme) => StyleSheet.create({
   },
   cardsRow: {
     flexDirection: 'row',
+    marginTop: 'auto',
     gap: 16,
   },
   card: {
