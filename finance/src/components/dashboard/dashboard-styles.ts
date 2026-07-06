@@ -1,15 +1,16 @@
 import { useTheme } from '@/hooks/use-theme';
-import { Dimensions, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 type Theme = ReturnType<typeof useTheme>;
-const { height } = Dimensions.get('window');
 
 export const makeDashboardStyles = (theme: Theme) => StyleSheet.create({
   wrapper: {
     flex: 1,
+    width: '100%',
     alignItems: 'center',
     backgroundColor: theme.background,
     paddingTop: 40,
+    paddingBottom: 40,
     gap: 30,
   },
   listContent: {
@@ -18,7 +19,7 @@ export const makeDashboardStyles = (theme: Theme) => StyleSheet.create({
   container: {
     backgroundColor: theme.primaryDark,
     width: '95%',
-    height: '30%',
+    minHeight: 310,
     borderRadius: 30,
     padding: 25,
     gap: 30,
@@ -28,15 +29,64 @@ export const makeDashboardStyles = (theme: Theme) => StyleSheet.create({
     flexDirection: 'row',
     gap: 20,
   },
-  dashboardSectionsRow: {
+  chartContainersRow: {
     width: '100%',
-    height: '100%',
+    minHeight: 500,
     flexDirection: 'row',
     gap: 20,
   },
+  chartContainer: {
+    overflow: 'hidden',
+    backgroundColor: theme.surface,
+    flex: 1,
+    minWidth: 0,
+    minHeight: 500,
+    borderRadius: 30,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: theme.border,
+  },
+  pieChartContentRow: {
+    width: '100%',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 20,
+    paddingTop: 30,
+  },
+  chartLegendContainer: {
+    width: '60%',
+    maxWidth: '100%',
+    minHeight: 240,
+    height: '70%',
+    backgroundColor: theme.background,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: theme.border,
+    gap: 24,
+    padding: 20,
+  },
+  chartLegendLabel: {
+    flexDirection: 'row',
+    gap: 20,
+    width: '100%',
+    minHeight: 38,
+  },
+  chartLegendColorBox: {
+    width: 10,
+    height: 10,
+    borderRadius: 30,
+  },
+
+  dashboardSectionsRow: {
+    width: '100%',
+    flexDirection: 'row',
+    gap: 20,
+    minHeight: 120,
+  },
   dashboardSectionsColumn: {
     width: '95%',
-    height: '28%',
     flexDirection: 'column',
     gap: 20,
   },
@@ -48,31 +98,40 @@ export const makeDashboardStyles = (theme: Theme) => StyleSheet.create({
   movementsContainer: {
     overflow: 'hidden',
     backgroundColor: theme.surface,
-    width: '65%',
+    flex: 2,
+    height: '60%',
     borderRadius: 30,
     padding: 20,
     gap: 5,
     borderWidth: 1,
     borderColor: theme.border,
   },
+  containerBadge: {
+    width: 80,
+    height: 30,
+    borderRadius: 30,
+    backgroundColor: theme.surfaceSoft,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   transactionCard: {
     backgroundColor: theme.background,
     justifyContent: 'center',
     width: '100%',
-    height: '23%',
+    minHeight: 72,
     borderRadius: 10,
     padding: 10,
   },
   containersText: {
-    fontSize: 16,
+    fontSize: 22,
     fontWeight: 'bold',
     color: theme.text,
   },
   goalContainer: {
     overflow: 'hidden',
     backgroundColor: theme.surface,
-    width: '33%',
-    height: '100%',
+    flex: 1,
+    height: '60%',
     borderRadius: 30,
     padding: 20,
     paddingRight: 0,
@@ -123,7 +182,7 @@ export const makeDashboardStyles = (theme: Theme) => StyleSheet.create({
     backgroundColor: theme.primarySoft,
     borderRadius: 16,
     padding: 16,
-    height: height * 0.1,
+    minHeight: 96,
   },
   cardLabel: {
     fontSize: 16,
@@ -152,7 +211,7 @@ export const makeDashboardStyles = (theme: Theme) => StyleSheet.create({
   },
   descriptionText: {
     marginTop: -5,
-    fontSize: 14,
+    fontSize: 16,
     color: theme.textSecondary,
   },
   iconContainer: {

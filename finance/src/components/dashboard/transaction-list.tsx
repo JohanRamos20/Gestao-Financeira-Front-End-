@@ -12,10 +12,17 @@ type TransactionListProps = {
 export function TransactionList({ transactions }: TransactionListProps) {
   const theme = useTheme();
   const styles = useMemo(() => makeDashboardStyles(theme), [theme]);
+  const latestTransactions = useMemo(
+    () =>
+      [...transactions]
+        .sort((a, b) => b.date.getTime() - a.date.getTime())
+        .slice(0, 4),
+    [transactions],
+  );
 
   return (
     <View style={styles.listContent}>
-      {transactions.map((item) => (
+      {latestTransactions.map((item) => (
         <TransactionCard key={item.id} transaction={item} />
       ))}
     </View>
