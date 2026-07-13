@@ -18,7 +18,7 @@ export const makeDashboardStyles = (theme: Theme) => StyleSheet.create({
     maxHeight: 350
   },
   container: {
-    backgroundColor: theme.primaryDark,
+    backgroundColor: theme.primaryMuted,
     width: '95%',
     minHeight: 310,
     borderRadius: 30,

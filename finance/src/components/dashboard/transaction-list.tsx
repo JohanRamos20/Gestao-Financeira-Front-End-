@@ -1,4 +1,4 @@
-import { makeDashboardStyles } from '@/components/dashboard/dashboard-styles';
+import { makeDashboardStyles } from '@/styles/dashboard-styles';
 import { TransactionCard } from '@/components/dashboard/transaction-card';
 import { useTheme } from '@/hooks/use-theme';
 import { Transaction } from '@/types/transaction';

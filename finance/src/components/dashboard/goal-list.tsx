@@ -1,4 +1,4 @@
-import { makeDashboardStyles } from '@/components/dashboard/dashboard-styles';
+import { makeDashboardStyles } from '@/styles/dashboard-styles';
 import { GoalProgressItem } from '@/components/dashboard/goal-label';
 import { useTheme } from '@/hooks/use-theme';
 import { Goal } from '@/types/goal';

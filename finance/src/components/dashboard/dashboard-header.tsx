@@ -1,4 +1,4 @@
-import { makeDashboardStyles } from '@/components/dashboard/dashboard-styles';
+import { makeDashboardStyles } from '@/styles/dashboard-styles';
 import { useTheme } from '@/hooks/use-theme';
 import { formatNumberToMoney } from '@/utils/formatters/format-number-to-money';
 import { useMemo } from 'react';

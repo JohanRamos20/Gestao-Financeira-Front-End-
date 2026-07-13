@@ -1,5 +1,5 @@
 import { PieChart as GiftedPieChart } from "react-native-gifted-charts";
-import { makeDashboardStyles } from '@/components/dashboard/dashboard-styles';
+import { makeDashboardStyles } from '@/styles/dashboard-styles';
 import { useTheme } from '@/hooks/use-theme';
 import { useMemo, useState} from 'react';
 import { View, Text } from "react-native";

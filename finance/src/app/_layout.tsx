@@ -1,89 +1,106 @@
 import '@/global.css';
 
 import { Drawer, DrawerContentScrollView, DrawerItemList } from 'expo-router/drawer';
-import { StyleSheet, Text, View } from 'react-native';
+import { Moon, Sun } from 'lucide-react-native';
+import { Pressable, Text, View } from 'react-native';
+import { makeLayoutStyles } from '@/styles/layout-styles';
+import { useMemo } from 'react';
+import { FloatingActionButton } from '@/components/floating-action-button';
+import { ThemeProvider } from '@/providers/theme-provider';
 
 import { DrawerTheme } from '@/constants/theme';
-import { useTheme } from '@/hooks/use-theme';
+import { useTheme, useThemeMode } from '@/hooks/use-theme';
 
 export default function Layout() {
-  const theme = useTheme();
-
   return (
-    <Drawer
-      drawerContent={(props) => (
-        <DrawerContentScrollView {...props}>
-          <View style={styles.brand}>
-            <Text
-              style={[
-                styles.brandText,
-                {
-                  color: theme.text,
-                },
-              ]}>
-              Finance
-            </Text>
-            <Text
-              style={{
-                fontSize: 16,
-                color: theme.textSecondary
-              }}>
-              Gestão Financeira
-            </Text>
-          </View>
-          <DrawerItemList {...props} />
-        </DrawerContentScrollView>
-      )}
-      screenOptions={{
-        headerShown: false,
-        drawerType: 'permanent',
-        drawerStyle: {
-          width: DrawerTheme.width,
-          backgroundColor: theme.surface,
-          borderRightColor: theme.border,
-        },
-        drawerLabelStyle: {
-          fontSize: DrawerTheme.labelFontSize,
-          fontWeight: DrawerTheme.labelFontWeight,
-        },
-        drawerActiveTintColor: theme.primary,
-        drawerInactiveTintColor: theme.textSecondary,
-        drawerActiveBackgroundColor: theme.primarySoft,
-        drawerItemStyle: {
-          borderRadius: DrawerTheme.itemRadius,
-          marginHorizontal: DrawerTheme.itemMarginHorizontal,
-        },
-      }}
-    >
-      <Drawer.Screen
-        name="index"
-        options={{
-          drawerLabel: 'Dashboard',
-        }}
-      />
-      <Drawer.Screen
-        name="transactions"
-        options={{
-          drawerLabel: 'Transações',
-        }}
-      />
-      <Drawer.Screen
-        name="goals"
-        options={{
-          drawerLabel: 'Metas',
-        }}
-      />
-    </Drawer>
-    
+    <ThemeProvider>
+      <ThemedLayout />
+    </ThemeProvider>
   );
 }
 
-const styles = StyleSheet.create({
-  brand: {
-    padding: 20,
-  },
-  brandText: {
-    fontSize: 22,
-    fontWeight: '700',
-  },
-});
+function ThemedLayout() {
+  const theme = useTheme();
+  const { mode, toggleTheme } = useThemeMode();
+  const styles = useMemo(() => makeLayoutStyles(theme), [theme]);
+
+  return (
+    <>
+      <Drawer
+        drawerContent={(props) => (
+          <DrawerContentScrollView {...props}>
+            <View style={styles.brand}>
+              <Text
+                style={[
+                  styles.brandText,
+                  {
+                    color: theme.text,
+                  },
+                ]}>
+                Finance
+              </Text>
+              <Text
+                style={{
+                  fontSize: 16,
+                  color: theme.textSecondary
+                }}>
+                Gestão Financeira
+              </Text>
+            </View>
+            <DrawerItemList {...props} />
+            <Pressable onPress={toggleTheme} style={styles.themeToggle}>
+              {mode === 'dark' ? (
+                <Sun color={theme.text} size={20} />
+              ) : (
+                <Moon color={theme.text} size={20} />
+              )}
+              <Text style={styles.themeToggleText}>
+                Usar tema {mode === 'dark' ? 'claro' : 'escuro'}
+              </Text>
+            </Pressable>
+          </DrawerContentScrollView>
+        )}
+        screenOptions={{
+          headerShown: false,
+          drawerType: 'permanent',
+          drawerStyle: {
+            width: DrawerTheme.width,
+            backgroundColor: theme.surface,
+            borderRightColor: theme.border,
+          },
+          drawerLabelStyle: {
+            fontSize: DrawerTheme.labelFontSize,
+            fontWeight: DrawerTheme.labelFontWeight,
+          },
+          drawerActiveTintColor: theme.primary,
+          drawerInactiveTintColor: theme.textSecondary,
+          drawerActiveBackgroundColor: theme.primarySoft,
+          drawerItemStyle: {
+            borderRadius: DrawerTheme.itemRadius,
+            marginHorizontal: DrawerTheme.itemMarginHorizontal,
+          },
+        }}
+      >
+        <Drawer.Screen
+          name="index"
+          options={{
+            drawerLabel: 'Dashboard',
+          }}
+        />
+        <Drawer.Screen
+          name="transactions"
+          options={{
+            drawerLabel: 'Transações',
+          }}
+        />
+        <Drawer.Screen
+          name="goals"
+          options={{
+            drawerLabel: 'Metas',
+          }}
+        />
+      </Drawer>
+      <FloatingActionButton></FloatingActionButton>
+      </>
+  );
+}

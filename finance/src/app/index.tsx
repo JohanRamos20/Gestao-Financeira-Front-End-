@@ -1,5 +1,5 @@
 import { GoalList } from "@/components/dashboard/goal-list";
-import { makeDashboardStyles } from "@/components/dashboard/dashboard-styles";
+import { makeDashboardStyles } from "@/styles/dashboard-styles";
 import { TransactionList } from "@/components/dashboard/transaction-list";
 import { useTheme } from "@/hooks/use-theme";
 import { goalMock, mockTransactions } from "@/mocks/dashboard";

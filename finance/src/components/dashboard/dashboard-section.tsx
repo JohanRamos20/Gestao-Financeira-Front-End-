@@ -1,6 +1,6 @@
 import { ReactNode, useMemo  } from 'react'
 import { ViewStyle, StyleProp, View, Text } from 'react-native'
-import { makeDashboardStyles } from './dashboard-styles';
+import { makeDashboardStyles } from '@/styles/dashboard-styles';
 import { useTheme} from '@/hooks/use-theme';
 
 type DashboardSectionProps = {

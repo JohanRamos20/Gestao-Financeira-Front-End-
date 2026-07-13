@@ -1,4 +1,4 @@
-import { makeDashboardStyles } from '@/components/dashboard/dashboard-styles';
+import { makeDashboardStyles } from '@/styles/dashboard-styles';
 import { useTheme } from '@/hooks/use-theme';
 import { useMemo} from 'react';
 import { View, Text } from "react-native";
@@ -25,9 +25,9 @@ export function ChartLegend({data} : ChartLegendComponentsProps) {
         <View style = { styles.chartLegendContainer}>
             <Text style = {styles.containersText}>Legenda</Text>
             {data.map((item) => (
-                <View style = {[styles.containersColumn, {justifyContent:'space-between'}]}>
-                    <View style = {{borderTopWidth:1, borderColor: theme.border}}/>
-                    <View key = {item.label} style = {[styles.chartLegendLabel, {alignItems:'center', justifyContent:'flex-start',}]}>
+                <View key={item.label} style = {[styles.containersColumn, {justifyContent:'space-between' }]}>
+                    <View style = {{borderTopWidth:1, borderColor: theme.border }}/>
+                    <View style = {[styles.chartLegendLabel , {alignItems:'center', justifyContent:'flex-start',}]}>
                         <View style = {[styles.chartLegendColorBox, {backgroundColor: item.color}]}/>
                         <View>
                             <Text style = {[styles.containersText, {paddingBottom : 5, fontSize: 22}]}>{item.label}</Text>
