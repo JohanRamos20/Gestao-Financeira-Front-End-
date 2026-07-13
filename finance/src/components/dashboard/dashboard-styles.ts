@@ -15,6 +15,7 @@ export const makeDashboardStyles = (theme: Theme) => StyleSheet.create({
   },
   listContent: {
     gap: 20,
+    maxHeight: 350
   },
   container: {
     backgroundColor: theme.primaryDark,
@@ -22,11 +23,13 @@ export const makeDashboardStyles = (theme: Theme) => StyleSheet.create({
     minHeight: 310,
     borderRadius: 30,
     padding: 25,
-    gap: 30,
+    gap: 50,
   },
   containersRow: {
     width: '100%',
     flexDirection: 'row',
+    justifyContent: "space-between", 
+    alignItems: "center",
     gap: 20,
   },
   chartContainersRow: {
@@ -34,17 +37,6 @@ export const makeDashboardStyles = (theme: Theme) => StyleSheet.create({
     minHeight: 500,
     flexDirection: 'row',
     gap: 20,
-  },
-  chartContainer: {
-    overflow: 'hidden',
-    backgroundColor: theme.surface,
-    flex: 1,
-    minWidth: 0,
-    minHeight: 500,
-    borderRadius: 30,
-    padding: 20,
-    borderWidth: 1,
-    borderColor: theme.border,
   },
   pieChartContentRow: {
     width: '100%',
@@ -82,8 +74,10 @@ export const makeDashboardStyles = (theme: Theme) => StyleSheet.create({
   dashboardSectionsRow: {
     width: '100%',
     flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     gap: 20,
-    minHeight: 120,
+    paddingBottom: 10
   },
   dashboardSectionsColumn: {
     width: '95%',
@@ -94,17 +88,6 @@ export const makeDashboardStyles = (theme: Theme) => StyleSheet.create({
     width: '95%',
     flexDirection: 'column',
     gap: 10,
-  },
-  movementsContainer: {
-    overflow: 'hidden',
-    backgroundColor: theme.surface,
-    flex: 2,
-    height: '60%',
-    borderRadius: 30,
-    padding: 20,
-    gap: 5,
-    borderWidth: 1,
-    borderColor: theme.border,
   },
   containerBadge: {
     width: 80,
@@ -194,7 +177,7 @@ export const makeDashboardStyles = (theme: Theme) => StyleSheet.create({
     fontWeight: 'bold',
   },
   title: {
-    fontSize: 40,
+    fontSize: 30,
     fontWeight: 'bold',
     color: theme.text,
   },
@@ -227,5 +210,37 @@ export const makeDashboardStyles = (theme: Theme) => StyleSheet.create({
   alignItems: 'center',
   gap: 10,
   flex: 1,
+  },
+  movementsContainer: {
+    overflow: 'hidden',
+    backgroundColor: theme.surface,
+    flex: 2,
+    height: '60%',
+    borderRadius: 30,
+    padding: 20,
+    gap: 5,
+    borderWidth: 1,
+    borderColor: theme.border,
+  },
+  chartContainer: {
+    overflow: 'hidden',
+    backgroundColor: theme.surface,
+    flex: 1,
+    minWidth: 0,
+    minHeight: 500,
+    borderRadius: 30,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: theme.border,
+  },
+  dashboardSectionContainer: {
+    overflow: 'hidden',
+    backgroundColor: theme.surface,
+    flex: 1,
+    minHeight: 500,
+    borderRadius: 30,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: theme.border,
   }
 });
