@@ -11,6 +11,11 @@ export const makeLayoutStyles = (theme: Theme) => StyleSheet.create({
     fontSize: 22,
     fontWeight: '700',
   },
+  title: {
+    fontSize: 22,
+    color: theme.text,
+    fontWeight: 'bold'
+  },
   themeToggle: {
     minHeight: 48,
     marginHorizontal: 16,
@@ -37,5 +42,23 @@ export const makeLayoutStyles = (theme: Theme) => StyleSheet.create({
     backgroundColor: theme.primary,
     alignItems: 'center',
     justifyContent: 'center',
-  }
+  },
+  modalContainer: {
+    backgroundColor : theme.surface,
+    borderWidth: 1,
+    borderColor: theme.border,
+    borderRadius: 24,
+    boxShadow: theme.shadow,
+    padding: 24,
+    width: '90%',
+    maxWidth: 520,
+    maxHeight: '90%'
+  },
+  overlay: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: theme.shadow
+  },
+
 })

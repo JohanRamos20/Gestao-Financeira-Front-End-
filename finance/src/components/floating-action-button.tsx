@@ -4,12 +4,16 @@ import { Plus } from 'lucide-react-native';
 import { useTheme } from '@/hooks/use-theme';
 import { useMemo } from 'react';
 
-export function FloatingActionButton() {
+export type FloatingActionButtonProps = {
+    onPress : () => void,
+}
+
+export function FloatingActionButton(props : FloatingActionButtonProps) {
   const theme = useTheme();
   const styles = useMemo(() => makeLayoutStyles(theme), [theme]);
 
   return(
-    <Pressable onPress={console.log('Apertado') ?? null} style = {styles.floatingContainer}>
+    <Pressable onPress={props.onPress} style = {styles.floatingContainer}>
         <Plus color={theme.backgroundElement}></Plus>
     </Pressable>
   )

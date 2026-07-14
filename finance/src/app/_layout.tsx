@@ -4,9 +4,10 @@ import { Drawer, DrawerContentScrollView, DrawerItemList } from 'expo-router/dra
 import { Moon, Sun } from 'lucide-react-native';
 import { Pressable, Text, View } from 'react-native';
 import { makeLayoutStyles } from '@/styles/layout-styles';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { FloatingActionButton } from '@/components/floating-action-button';
 import { ThemeProvider } from '@/providers/theme-provider';
+import { NewTransactionModal } from '@/components/modal/new-transaction-modal';
 
 import { DrawerTheme } from '@/constants/theme';
 import { useTheme, useThemeMode } from '@/hooks/use-theme';
@@ -22,6 +23,7 @@ export default function Layout() {
 function ThemedLayout() {
   const theme = useTheme();
   const { mode, toggleTheme } = useThemeMode();
+  const [modalVisible, setModalVisible] = useState(false)
   const styles = useMemo(() => makeLayoutStyles(theme), [theme]);
 
   return (
@@ -100,7 +102,8 @@ function ThemedLayout() {
           }}
         />
       </Drawer>
-      <FloatingActionButton></FloatingActionButton>
+      <FloatingActionButton onPress={() => setModalVisible(true)}/>
+      <NewTransactionModal visible={modalVisible} onClose={() => setModalVisible(false)}></NewTransactionModal>
       </>
   );
 }
