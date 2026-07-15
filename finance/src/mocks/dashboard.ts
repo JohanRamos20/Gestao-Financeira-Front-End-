@@ -18,7 +18,7 @@ export const mockTransactions: Transaction[] = [
   { id: '2', name: 'Uber', date: new Date('2026-07-02'), value: 80, category: Category.Expenses, type: 'debit' },
   { id: '3', name: 'Salary', date: new Date('2026-07-05'), value: 5000, category: Category.Salary, type: 'credit' },
   { id: '4', name: 'Restaurant', date: new Date('2026-07-06'), value: 65, category: Category.Food, type: 'debit' },
-  { id: '5', name: 'Cinema', date: new Date('2026-07-08'), value: 150, category: Category.Leisure, type: 'debit' },
+  { id: '5', name: 'Cinema', date: new Date('2026-07-08'), value: 1500, category: Category.Leisure, type: 'debit' },
   { id: '6', name: 'Rent', date: new Date('2026-07-10'), value: 620, category: Category.Expenses, type: 'debit' },
   { id: '7', name: 'Taxi', date: new Date('2026-07-12'), value: 45, category: Category.Expenses, type: 'debit' },
   { id: '8', name: 'New Sneakers', date: new Date('2026-07-15'), value: 350, category: Category.Shopping, type: 'debit' },

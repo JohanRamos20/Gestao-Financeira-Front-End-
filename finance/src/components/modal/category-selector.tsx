@@ -1,6 +1,6 @@
 import { CATEGORIES, Category } from "@/types/transaction"
 import { View, Text } from "react-native"
-import { CategoryCard } from "../category-card"
+import { CategoryCard } from "./category-card"
 import { useTheme } from "@/providers/theme-provider"
 import { useMemo } from "react"
 import { makeSharedStyles } from "@/styles/shared-styles"

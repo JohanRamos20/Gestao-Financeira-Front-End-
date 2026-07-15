@@ -1,19 +1,21 @@
 import { useTheme } from "@/providers/theme-provider"
 import { makeSharedStyles } from "@/styles/shared-styles"
-import { useMemo, useState } from "react"
+import { useMemo } from "react"
 import { TextInput as GiftedTextInput } from "react-native-gesture-handler"
-import { View, Text } from "react-native"
+import { KeyboardTypeOptions, View, Text } from "react-native"
 
 export type TextInputProps = {
     label : string,
     placeholder : string,
     prefix? : string,
+    value : string,
+    onChangeText : (value: string) => void,
+    keyboardType? : KeyboardTypeOptions,
 }
 
 export function TextInput(props : TextInputProps) {
     const theme = useTheme()
     const styles = useMemo(() => makeSharedStyles(theme), [theme])
-    const [value, setValue] = useState('')
     return (
         <View>
             <Text style = {styles.label}>
@@ -29,8 +31,9 @@ export function TextInput(props : TextInputProps) {
                     style = {[styles.input, { outlineStyle: 'none', outlineColor: 'transparent' } as any]}
                     placeholder={props.placeholder}
                     placeholderTextColor={theme.textSecondary}
-                    value={value}
-                    onChangeText={setValue}
+                    value={props.value}
+                    onChangeText={props.onChangeText}
+                    keyboardType={props.keyboardType}
                 ></GiftedTextInput>
             </View>
         </View>
@@ -38,4 +41,3 @@ export function TextInput(props : TextInputProps) {
 
 }
 
-//AJEITAR A BORDA QUANDO O TEXT INPUT ESTÁ SELECIONADO

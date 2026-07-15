@@ -7,7 +7,7 @@ import { makeLayoutStyles } from '@/styles/layout-styles';
 import { useMemo, useState } from 'react';
 import { FloatingActionButton } from '@/components/floating-action-button';
 import { ThemeProvider } from '@/providers/theme-provider';
-import { NewTransactionModal } from '@/components/modal/new-transaction-modal';
+import { NewTransactionData, NewTransactionModal } from '@/components/modal/new-transaction-modal';
 
 import { DrawerTheme } from '@/constants/theme';
 import { useTheme, useThemeMode } from '@/hooks/use-theme';
@@ -25,6 +25,10 @@ function ThemedLayout() {
   const { mode, toggleTheme } = useThemeMode();
   const [modalVisible, setModalVisible] = useState(false)
   const styles = useMemo(() => makeLayoutStyles(theme), [theme]);
+
+  function handleCreateTransaction(transaction: NewTransactionData) {
+    console.log('Nova transacao:', transaction);
+  }
 
   return (
     <>
@@ -103,7 +107,11 @@ function ThemedLayout() {
         />
       </Drawer>
       <FloatingActionButton onPress={() => setModalVisible(true)}/>
-      <NewTransactionModal visible={modalVisible} onClose={() => setModalVisible(false)}></NewTransactionModal>
+      <NewTransactionModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        onSubmit={handleCreateTransaction}
+      ></NewTransactionModal>
       </>
   );
 }
