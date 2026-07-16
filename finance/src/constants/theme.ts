@@ -3,6 +3,7 @@ import { Platform } from 'react-native';
 export const Colors = {
   light: {
     background: '#f5f5f7',
+    backgroundLogin: '#1B1730',
     surface: '#ffffff',
     surfaceSoft: '#f7f5ff',
     text: '#1a1a2e',
@@ -34,6 +35,7 @@ export const Colors = {
   },
   dark: {
     background: '#0f0f12',
+    backgroundLogin: '#1B1730',
     surface: '#171720',
     surfaceSoft: '#1e1a3a',
     text: '#e0e0e0',
@@ -85,10 +87,10 @@ export const Fonts = Platform.select({
     mono: 'monospace',
   },
   web: {
-    sans: 'var(--font-display)',
-    serif: 'var(--font-serif)',
-    rounded: 'var(--font-rounded)',
-    mono: 'var(--font-mono)',
+    display: 'Fraunces_500Medium',
+    body: 'Inter_400Regular',
+    bodyMedium: 'Inter_500Medium',
+    bodySemiBold: 'Inter_600SemiBold',
   },
 });
 

@@ -6,8 +6,8 @@ import { makeSharedStyles } from "@/styles/shared-styles";
 type ButtonProps = {
     label : string,
     onPress : () => void,
-    style : StyleProp<ViewStyle>,
-    contentStyle : StyleProp<TextStyle>
+    style? : StyleProp<ViewStyle>,
+    contentStyle? : StyleProp<TextStyle>
 }
 
 export function Button(props : ButtonProps) {

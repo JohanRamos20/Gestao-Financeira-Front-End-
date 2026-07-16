@@ -1,0 +1,38 @@
+import { useTheme } from '@/providers/theme-provider';
+import { useAuth } from '@/providers/auth-provider';
+import { Button } from '@/components/button';
+import { View, Text, Pressable } from 'react-native'
+import { useMemo, useState } from 'react';
+import { makeLoginStyles } from '@/styles/login-styles';
+import { TextInput } from '@/components/modal/text-input';
+
+
+export function LoginContainer() {
+    const { isAuthenticated, signIn } = useAuth();
+    const [ email, setEmail ] = useState('')
+    const [ password, setPassword ] = useState('')
+    const theme = useTheme()
+    const styles = useMemo(() => makeLoginStyles(theme), [theme])
+    return(
+        <View style={styles.loginContainer}>
+            <TextInput label='E-mail' placeholder='seu@email.com' onChangeText={setEmail} value={email} style={styles.inputText} font={{ fontSize: 14 }}></TextInput>
+            <TextInput label='Senha' placeholder='••••••••' onChangeText={setPassword} value={password} style={styles.inputText} font={{ fontSize: 14 }} secureTextEntry={true}></TextInput>
+            <Pressable style={styles.forgotPassword}>
+                <Text style={styles.textPressable}>
+                    Esqueceu a senha?
+                </Text>
+            </Pressable>
+            <Button onPress={() => signIn({ email: 'teste@email.com', password: '123456' })} label='Entrar' style={styles.button} contentStyle={{ fontSize: 14, color: '#FFF' }}></Button>
+            <View style={styles.signupRow}>
+                <Text>
+                    Não tem conta?
+                </Text>
+                <Pressable>
+                    <Text style={styles.textPressable}>
+                        Criar Conta
+                    </Text>
+                </Pressable>
+            </View>
+        </View>
+    )
+}

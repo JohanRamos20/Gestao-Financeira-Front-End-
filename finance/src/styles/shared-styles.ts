@@ -7,7 +7,6 @@ export const makeSharedStyles = (theme: Theme) => StyleSheet.create({
     input: {
         paddingVertical: 20,
         flex: 1,
-        color: theme.text,
         fontSize: 22,
     },
     inputWrapper: {
@@ -26,7 +25,7 @@ export const makeSharedStyles = (theme: Theme) => StyleSheet.create({
         marginRight: 4,
     },
     label: {
-        fontSize: 16,
+        fontSize: 14,
         paddingBottom: 10,
         color: theme.textSecondary,
         fontWeight: 'bold'
@@ -88,7 +87,7 @@ export const makeSharedStyles = (theme: Theme) => StyleSheet.create({
         fontSize: 18,
     },
     button: {
-        minHeight: 50,
+        minHeight: 40,
         width: '49%',
         borderRadius:15,
         paddingVertical: 12,

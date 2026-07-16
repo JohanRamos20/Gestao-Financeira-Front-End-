@@ -1,4 +1,4 @@
-import { Colors } from '@/constants/theme';
+import { Colors, Fonts } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import type { PropsWithChildren } from 'react';
@@ -7,7 +7,7 @@ export type ThemeMode = keyof typeof Colors;
 
 type ThemeContextValue = {
   mode: ThemeMode;
-  theme: (typeof Colors)[ThemeMode];
+  theme: (typeof Colors)[ThemeMode] & { fonts: typeof Fonts };
   toggleTheme: () => void;
 };
 
@@ -30,7 +30,11 @@ export function ThemeProvider({ children }: PropsWithChildren) {
   }, [systemScheme]);
 
   const value = useMemo(
-    () => ({ mode, theme: Colors[mode], toggleTheme }),
+    () => ({
+      mode,
+      theme: { ...Colors[mode], fonts: Fonts },
+      toggleTheme,
+    }),
     [mode, toggleTheme],
   );
 

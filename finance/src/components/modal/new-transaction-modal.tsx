@@ -83,8 +83,8 @@ export function NewTransactionModal({ visible, onClose, onSubmit }: NewTransacti
                                     <X color={theme.textSecondary} />
                                 </Pressable>
                             </View>
-                            <TextInput label="Nome" placeholder="Ex.: Steam" value={name} onChangeText={setName}></TextInput>
-                            <TextInput label="Valor" prefix='R$' placeholder="0,00" value={value} onChangeText={(text) => setValue(SanitizeNumericInput(text))} keyboardType="decimal-pad"></TextInput>
+                            <TextInput font={{color:theme.textSecondary}} label="Nome" placeholder="Ex.: Steam" value={name} onChangeText={setName}></TextInput>
+                            <TextInput font={{color:theme.textSecondary}} label="Valor" prefix='R$' placeholder="0,00" value={value} onChangeText={(text) => setValue(SanitizeNumericInput(text))} keyboardType="decimal-pad"></TextInput>
                             <TypeSelector label="Tipo" value={type} onChange={setType}></TypeSelector>
                             <CategorySelector label='Categoria' value={category} onChange={setCategory} />
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 'auto' }}>
