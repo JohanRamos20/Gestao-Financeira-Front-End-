@@ -8,7 +8,7 @@ import { makeLayoutStyles } from '@/styles/layout-styles';
 import { useMemo, useState } from 'react';
 import { FloatingActionButton } from '@/components/floating-action-button';
 import { NewTransactionData, NewTransactionModal } from '@/components/modal/new-transaction-modal';
-import { Href } from 'expo-router';
+import { createTransaction } from '@/services/transactions-service';
 
 import { DrawerTheme } from '@/constants/theme';
 import { useAuth } from '@/hooks/use-auth';
@@ -27,8 +27,17 @@ function ThemedLayout() {
   const [modalVisible, setModalVisible] = useState(false)
   const styles = useMemo(() => makeLayoutStyles(theme), [theme]);
 
-  function handleCreateTransaction(transaction: NewTransactionData) {
-    console.log('Nova transacao:', transaction);
+  async function handleCreateTransaction(transaction: NewTransactionData) {
+    try {
+      await createTransaction(
+        transaction.name,
+        transaction.value,
+        transaction.category,
+        transaction.type,
+      );
+    } catch(error) {
+      console.log('Erro ao criar transação', error)
+    }
   }
 
   if (!isAuthenticated) {

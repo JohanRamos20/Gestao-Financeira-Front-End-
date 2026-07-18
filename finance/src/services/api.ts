@@ -1,20 +1,24 @@
-const API_URL = process.env.EXPO_PUBLIC_API_URL;
+let authToken: string | null = null;
 
-export async function api(path : string, options?: RequestInit) {
+export function setAuthToken(token: string | null) {
+  authToken = token;
+}
 
-    const response = await fetch(`${API_URL}${path}`, {
-        headers: {
-            'Content-Type': 'application/json',
-            ...options?.headers
-        }, ...options,
-    });
+export async function api(path: string, options?: RequestInit) {
+  const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}${path}`, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+      ...options?.headers,
+    },
+  });
 
-    const data = await response.json();
+  const data = await response.json();
 
-    if(!response.ok) {
-        throw new Error(data.message || 'Erro na requisição')
-    }
+  if (!response.ok) {
+    throw new Error(data.message || 'Erro na requisicao');
+  }
 
-    return data;
-
+  return data;
 }

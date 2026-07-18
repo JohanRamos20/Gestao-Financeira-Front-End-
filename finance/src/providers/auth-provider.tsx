@@ -1,6 +1,8 @@
 import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import type { PropsWithChildren } from 'react';
 import { login, register } from '@/services/auth-service'
+import { setAuthToken } from '@/services/api';
+
 type User = {
   id: string;
   name: string;
@@ -37,9 +39,11 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const [token, setToken] = useState<string | null>(null)
 
   const signIn = useCallback(async (data: SignInData) => {
-    const response = await login(data.email, data.password) as AuthResponse
-    setToken(response.token)
-  }, []);
+  const response = await login(data.email, data.password) as AuthResponse;
+
+  setToken(response.token);
+  setAuthToken(response.token);
+}, []);
 
   const signUp = useCallback(async(data: SignUpData) => {
     const response = await register(data.name, data.email, data.password)
@@ -47,7 +51,8 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
   const signOut = useCallback(() => {
     setUser(null);
-    setToken(null)
+    setToken(null);
+    setAuthToken(null);
   }, []);
 
   const value = useMemo(
