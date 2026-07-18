@@ -9,9 +9,6 @@ export const makeLoginStyles = (theme: Theme) => StyleSheet.create({
         flexDirection: 'row',
         backgroundColor: '#FFF',
     },
-    screenCompact: {
-        flexDirection: 'column',
-    },
     leftSide : {
         flex: 1.15,
         backgroundColor: theme.backgroundLogin,
@@ -21,10 +18,6 @@ export const makeLoginStyles = (theme: Theme) => StyleSheet.create({
         overflow: 'hidden',
         position: 'relative',
     },
-    leftSideCompact: {
-        flex: 0,
-        minHeight: 96,
-    },
     rightSide : {
         alignItems: 'center',
         justifyContent: 'center',
@@ -32,25 +25,15 @@ export const makeLoginStyles = (theme: Theme) => StyleSheet.create({
         paddingHorizontal: 24,
         paddingVertical: 40,
     },
-    rightSideCompact: {
-        flex: 1,
-        paddingVertical: 28,
-    },
     logoContainer: {
         width: 300,
         height: 40,
-    },
-    logoContainerCompact: {
-        width: 240,
     },
     logo: {
         width: '100%',
         height: 80,
         aspectRatio: 5,
         resizeMode: 'contain',
-    },
-    logoCompact: {
-        width: 240,
     },
     decorativeCircle: {
         position: 'absolute',
@@ -64,14 +47,6 @@ export const makeLoginStyles = (theme: Theme) => StyleSheet.create({
         bottom: -145,
         zIndex: 0,
     },
-    decorativeCircleCompact: {
-        width: 260,
-        height: 260,
-        borderRadius: 260,
-        borderWidth: 34,
-        right: -110,
-        bottom: -100,
-    },
     leftContent: {
         flex: 1,
         padding: 0,
@@ -84,8 +59,9 @@ export const makeLoginStyles = (theme: Theme) => StyleSheet.create({
     },
     heroTitle: {
         color: '#FFF',
-        fontSize: 35,
+        fontSize: 30,
         fontFamily: theme.fonts.display,
+        fontWeight: 'bold'
     },
     heroDescriptionContainer: {
         width: 300,
@@ -126,5 +102,13 @@ export const makeLoginStyles = (theme: Theme) => StyleSheet.create({
         flexWrap: 'wrap',
         gap: 5,
         justifyContent: 'center',
+    },
+    title: {
+        fontSize: 26,
+        fontWeight: '600',
+    },
+    subtitle: {
+        fontSize: 15,
+        color: theme.textSecondary
     }
 })

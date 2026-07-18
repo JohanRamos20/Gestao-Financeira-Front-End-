@@ -5,16 +5,21 @@ import { View, Text, Pressable } from 'react-native'
 import { useMemo, useState } from 'react';
 import { makeLoginStyles } from '@/styles/login-styles';
 import { TextInput } from '@/components/modal/text-input';
+import { Link } from 'expo-router';
 
 
 export function LoginContainer() {
-    const { isAuthenticated, signIn } = useAuth();
+    const { signIn } = useAuth();
     const [ email, setEmail ] = useState('')
     const [ password, setPassword ] = useState('')
     const theme = useTheme()
     const styles = useMemo(() => makeLoginStyles(theme), [theme])
     return(
         <View style={styles.loginContainer}>
+            <View>
+                <Text style={styles.subtitle}>Bem-vindo de volta</Text>
+                <Text style={styles.title}>Entrar na sua conta</Text>
+            </View>
             <TextInput label='E-mail' placeholder='seu@email.com' onChangeText={setEmail} value={email} style={styles.inputText} font={{ fontSize: 14 }}></TextInput>
             <TextInput label='Senha' placeholder='••••••••' onChangeText={setPassword} value={password} style={styles.inputText} font={{ fontSize: 14 }} secureTextEntry={true}></TextInput>
             <Pressable style={styles.forgotPassword}>
@@ -27,11 +32,13 @@ export function LoginContainer() {
                 <Text>
                     Não tem conta?
                 </Text>
-                <Pressable>
-                    <Text style={styles.textPressable}>
-                        Criar Conta
-                    </Text>
-                </Pressable>
+                <Link href="/create-account" asChild>
+                    <Pressable>
+                        <Text style={styles.textPressable}>
+                            Criar Conta
+                        </Text>
+                    </Pressable>
+                </Link>
             </View>
         </View>
     )
