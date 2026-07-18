@@ -2,11 +2,13 @@ import { Button } from '@/components/button';
 import { TextInput } from '@/components/modal/text-input';
 import { useTheme } from '@/providers/theme-provider';
 import { makeLoginStyles } from '@/styles/login-styles';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
+import { useAuth } from '@/providers/auth-provider'
 
 export function CreateAccountContainer() {
+    const { signUp } = useAuth()
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -24,7 +26,13 @@ export function CreateAccountContainer() {
             <TextInput label="E-mail" placeholder="seu@email.com" onChangeText={setEmail} value={email} style={styles.inputText} font={{ fontSize: 14 }} keyboardType="email-address"></TextInput>
             <TextInput label="Senha" placeholder="••••••••" onChangeText={setPassword} value={password} style={styles.inputText} font={{ fontSize: 14 }} secureTextEntry={true}></TextInput>
             <TextInput label="Confirmar Senha" placeholder="••••••••" onChangeText={setConfirmPassword} value={confirmPassword} style={styles.inputText} font={{ fontSize: 14 }} secureTextEntry={true}></TextInput>
-            <Button onPress={() => {}} label="Criar conta" style={styles.button} contentStyle={{ fontSize: 14, color: '#FFF' }}></Button>
+            <Button onPress={async () => {
+                if (password !== confirmPassword) {
+                    return
+                }
+                await signUp({ name, email, password })
+                router.replace('/login')
+            }} label="Criar conta" style={styles.button} contentStyle={{ fontSize: 14, color: '#FFF' }}></Button>
             <View style={styles.signupRow}>
                 <Text>
                     Já tem conta?

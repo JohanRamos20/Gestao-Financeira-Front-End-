@@ -27,7 +27,7 @@ export function LoginContainer() {
                     Esqueceu a senha?
                 </Text>
             </Pressable>
-            <Button onPress={() => signIn({ email: 'teste@email.com', password: '123456' })} label='Entrar' style={styles.button} contentStyle={{ fontSize: 14, color: '#FFF' }}></Button>
+            <Button onPress={() => signIn({email, password})} label='Entrar' style={styles.button} contentStyle={{ fontSize: 14, color: '#FFF' }}></Button>
             <View style={styles.signupRow}>
                 <Text>
                     Não tem conta?
