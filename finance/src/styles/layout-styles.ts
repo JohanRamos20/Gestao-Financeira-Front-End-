@@ -4,6 +4,9 @@ import { StyleSheet } from 'react-native';
 type Theme = ReturnType<typeof useTheme>;
 
 export const makeLayoutStyles = (theme: Theme) => StyleSheet.create({
+  drawerContent: {
+    flexGrow: 1,
+  },
   brand: {
     padding: 20,
   },
@@ -16,7 +19,7 @@ export const makeLayoutStyles = (theme: Theme) => StyleSheet.create({
     color: theme.text,
     fontWeight: 'bold'
   },
-  themeToggle: {
+  drawerButton: {
     minHeight: 48,
     marginHorizontal: 16,
     marginTop: 16,
@@ -26,6 +29,9 @@ export const makeLayoutStyles = (theme: Theme) => StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
+  },
+  drawerSpacer: {
+    flex: 1,
   },
   themeToggleText: {
     color: theme.text,

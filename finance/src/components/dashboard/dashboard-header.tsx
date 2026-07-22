@@ -22,7 +22,7 @@ export function DashboardHeader( props : HeaderProps) {
   return (
     <View style = {[styles.container, props.style]}>
       <View>
-        <Text style={styles.subtitle}>Ola, {props.username}</Text>
+        <Text style={styles.subtitle}>Olá, {props.username}</Text>
         <Text style={styles.title}>Visão geral</Text>
       </View>
       <View>
@@ -30,9 +30,9 @@ export function DashboardHeader( props : HeaderProps) {
         <Text style={styles.balancetext}>{valueFormated}</Text>
       </View>
       <View style={styles.cardsRow}>
-        <SummaryCard label="Receitas" value={5200} />
-        <SummaryCard label="Gastos" value={2000} />
-        <SummaryCard label="Futuros" value={1500} />
+        <SummaryCard label="Receitas" value={props.revenue} />
+        <SummaryCard label="Gastos" value={props.expense} />
+        <SummaryCard label="Futuros" value={props.future} />
       </View>
     </View>
   );

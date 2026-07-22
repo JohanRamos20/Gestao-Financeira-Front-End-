@@ -14,10 +14,11 @@ export async function api(path: string, options?: RequestInit) {
     },
   });
 
-  const data = await response.json();
+  const text = await response.text();
+  const data = text ? JSON.parse(text) : null;
 
   if (!response.ok) {
-    throw new Error(data.message || 'Erro na requisicao');
+    throw new Error(data?.message || `Erro na requisicao ${response.status} em ${path}`);
   }
 
   return data;

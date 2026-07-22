@@ -8,9 +8,13 @@ import { useTheme } from '@/hooks/use-theme';
 import { LeftSide } from '@/components/left-side-auth-pages';
 
 export default function LoginScreen() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
   const theme = useTheme()
   const styles = useMemo(() => makeLoginStyles(theme), [theme])
+
+  if (isLoading) {
+    return null;
+  }
 
   if (isAuthenticated) {
     return <Redirect href="/" />;

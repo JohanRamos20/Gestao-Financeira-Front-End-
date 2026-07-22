@@ -7,25 +7,19 @@ type ChartColors = {
 };
 
 export function mapTransactionsToPieChartData(
-  transactions: Transaction[],
-  remaining: number,
+  expenses: number,
+  revenue: number,
   colors: ChartColors
 ): PieChartProps {
-  const spent = transactions
-    .filter((transaction) => transaction.type === 'debit')
-    .reduce((total, transaction) => {
-      return total + transaction.value;
-    }, 0);
-
   return [
     {
       label: 'Gasto',
-      value: spent,
+      value: expenses,
       color: colors.spent
     },
     {
-      label: 'Restante',
-      value: remaining,
+      label: 'Receita',
+      value: revenue,
       color: colors.remaining
     },
   ];

@@ -1,10 +1,11 @@
 import { Category } from "@/types/transaction";
 import { api } from "./api";
 import { TransactionType } from "@/components/modal/type-selector";
+import { parseTransactionsResponse } from "@/validators/transaction-validator";
 
 type Filter = {
-    category : Category,
-    transactionType : TransactionType
+    category? : Category,
+    transactionType? : TransactionType
 }
 
 const categoryToApi = {
@@ -38,13 +39,24 @@ export function createTransaction(
     })
 }
 
-export function findTransaction(filter: Filter) {
-  const params = new URLSearchParams({
-    category: categoryToApi[filter.category],
-    transactionType: transactionTypeToApi[filter.transactionType],
-  });
+export async function findTransaction(filter?: Filter) {
+  const params = new URLSearchParams()
+    if (filter?.category) {
+    params.set('category', categoryToApi[filter.category]);
+  }
 
-  return api(`/users/me/transactions?${params.toString()}`, {
+  if (filter?.transactionType) {
+    params.set('transactionType', transactionTypeToApi[filter.transactionType]);
+  }
+
+  const query = params.toString();
+  const path = query
+    ? `/users/me/transactions?${query}`
+    : '/users/me/transactions';
+
+  const data = await api(path, {
     method: 'GET',
   });
+
+  return parseTransactionsResponse(data);
 }

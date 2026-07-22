@@ -2,13 +2,14 @@ import '@/global.css';
 
 import { Redirect } from 'expo-router';
 import { Drawer, DrawerContentScrollView, DrawerItemList } from 'expo-router/drawer';
-import { Moon, Sun } from 'lucide-react-native';
+import { LogOut, Moon, Sun } from 'lucide-react-native';
 import { Pressable, Text, View } from 'react-native';
 import { makeLayoutStyles } from '@/styles/layout-styles';
 import { useMemo, useState } from 'react';
 import { FloatingActionButton } from '@/components/floating-action-button';
 import { NewTransactionData, NewTransactionModal } from '@/components/modal/new-transaction-modal';
 import { createTransaction } from '@/services/transactions-service';
+import { emitTransactionsChanged } from '@/events/transaction-events';
 
 import { DrawerTheme } from '@/constants/theme';
 import { useAuth } from '@/hooks/use-auth';
@@ -23,7 +24,7 @@ export default function Layout() {
 function ThemedLayout() {
   const theme = useTheme();
   const { mode, toggleTheme } = useThemeMode();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading, signOut } = useAuth();
   const [modalVisible, setModalVisible] = useState(false)
   const styles = useMemo(() => makeLayoutStyles(theme), [theme]);
 
@@ -35,9 +36,14 @@ function ThemedLayout() {
         transaction.category,
         transaction.type,
       );
+      emitTransactionsChanged();
     } catch(error) {
       console.log('Erro ao criar transação', error)
     }
+  }
+
+  if (isLoading) {
+    return null;
   }
 
   if (!isAuthenticated) {
@@ -48,7 +54,7 @@ function ThemedLayout() {
     <>
       <Drawer
         drawerContent={(props) => (
-          <DrawerContentScrollView {...props}>
+          <DrawerContentScrollView {...props} contentContainerStyle={styles.drawerContent}>
             <View style={styles.brand}>
               <Text
                 style={[
@@ -68,7 +74,7 @@ function ThemedLayout() {
               </Text>
             </View>
             <DrawerItemList {...props} />
-            <Pressable onPress={toggleTheme} style={styles.themeToggle}>
+            <Pressable onPress={toggleTheme} style={styles.drawerButton}>
               {mode === 'dark' ? (
                 <Sun color={theme.text} size={20} />
               ) : (
@@ -76,6 +82,14 @@ function ThemedLayout() {
               )}
               <Text style={styles.themeToggleText}>
                 Usar tema {mode === 'dark' ? 'claro' : 'escuro'}
+              </Text>
+            </Pressable>
+            <View style={styles.drawerSpacer} />
+            <Pressable onPress={() => signOut()} style={[styles.drawerButton, {backgroundColor:'transparent', borderWidth: 1, borderColor:theme.red}]}>
+              <LogOut color= {theme.red}>
+              </LogOut>
+              <Text style={styles.themeToggleText}>
+                Sair
               </Text>
             </Pressable>
           </DrawerContentScrollView>

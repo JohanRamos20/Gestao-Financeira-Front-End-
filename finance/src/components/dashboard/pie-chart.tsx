@@ -20,8 +20,12 @@ type PieChartComponentsProps = {
 export function PieChart({data} : PieChartComponentsProps) {
     const theme = useTheme();
     const styles = useMemo(() => makeDashboardStyles(theme), [theme]);
-    const remaining = data.find(item => item.label === 'Restante')
-    const valueFormated = formatNumberToMoney(remaining?.value ?? 0)
+    const remaining = data.reduce((acc,  transactions) => {
+        if(transactions.label==='Gasto') {
+            return acc - transactions.value
+        } return acc + transactions.value
+    }, 0)
+    const valueFormated = formatNumberToMoney(remaining)
 
     const [containerWidth, setContainerWidth] = useState(0)
     const radius = Math.min(180, Math.max(120, containerWidth * 0.40))
