@@ -1,8 +1,15 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import type { PropsWithChildren } from 'react';
 import { login, register } from '@/services/auth-service'
-import { setAuthToken } from '@/services/api';
-import { parseAuthResponse, type User } from '@/validators/auth-validator';
+import { setAuthToken } from '@/features/auth/auth-token';
+import type { User } from '@/validators/auth-validator';
+import { getJwtExpirationTime } from '@/features/auth/jwt';
+import {
+  clearPersistedAuthSession,
+  persistAuthSession,
+  readPersistedAuthSession,
+  type AuthSession,
+} from '@/features/auth/auth-session-storage';
 
 type SignInData = {
   email: string;
@@ -25,123 +32,36 @@ type AuthContextValue = {
 };
 
 const AuthContext = createContext<AuthContextValue | null>(null);
-const AUTH_STORAGE_KEY = '@finance:auth';
-
-function getStorage() {
-  if (typeof globalThis.localStorage === 'undefined') {
-    return null;
-  }
-
-  return globalThis.localStorage;
-}
-
-function getJwtPayload(token: string): unknown {
-  const payload = token.split('.')[1];
-
-  if (!payload || typeof globalThis.atob !== 'function') {
-    return null;
-  }
-
-  const base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
-  const paddedBase64 = base64.padEnd(Math.ceil(base64.length / 4) * 4, '=');
-
-  try {
-    return JSON.parse(globalThis.atob(paddedBase64));
-  } catch {
-    return null;
-  }
-}
-
-function getJwtExpirationTime(token: string) {
-  const payload = getJwtPayload(token);
-
-  if (!payload || typeof payload !== 'object' || !('exp' in payload)) {
-    return null;
-  }
-
-  const expirationInSeconds = payload.exp;
-
-  if (typeof expirationInSeconds !== 'number') {
-    return null;
-  }
-
-  return expirationInSeconds * 1000;
-}
-
-function isJwtTokenValid(token: string) {
-  const expirationTime = getJwtExpirationTime(token);
-
-  return expirationTime !== null && expirationTime > Date.now();
-}
-
-function persistAuthSession(user: User, token: string) {
-  const storage = getStorage();
-
-  if (!storage || !isJwtTokenValid(token)) {
-    return;
-  }
-
-  storage.setItem(AUTH_STORAGE_KEY, JSON.stringify({ user, token }));
-}
-
-function clearPersistedAuthSession() {
-  getStorage()?.removeItem(AUTH_STORAGE_KEY);
-}
 
 export function AuthProvider({ children }: PropsWithChildren) {
-  const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(true);
+  const [authSession, setAuthSession] = useState<AuthSession | null>(() => {
+    const session = readPersistedAuthSession();
+    setAuthToken(session?.token ?? null);
 
-  useEffect(() => {
-    const storage = getStorage();
+    return session;
+  });
 
-    if (!storage) {
-      setIsLoading(false);
-      return;
-    }
-
-    const storedAuth = storage.getItem(AUTH_STORAGE_KEY);
-
-    if (!storedAuth) {
-      setIsLoading(false);
-      return;
-    }
-
-    try {
-      const response = parseAuthResponse(JSON.parse(storedAuth));
-
-      if (!isJwtTokenValid(response.token)) {
-        clearPersistedAuthSession();
-        return;
-      }
-
-      setToken(response.token);
-      setUser(response.user);
-      setAuthToken(response.token);
-    } catch {
-      clearPersistedAuthSession();
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+  const user = authSession?.user ?? null;
+  const token = authSession?.token ?? null;
+  const isLoading = false;
 
   const signIn = useCallback(async (data: SignInData) => {
-  const response = await login(data.email, data.password);
+    const response = await login(data.email, data.password);
 
-  setToken(response.token);
-  setUser(response.user)
-  setAuthToken(response.token);
-  persistAuthSession(response.user, response.token);
-}, []);
+    setAuthSession({
+      user: response.user,
+      token: response.token,
+    });
+    setAuthToken(response.token);
+    persistAuthSession(response.user, response.token);
+  }, []);
 
-  const signUp = useCallback(async(data: SignUpData) => {
-    const response = await register(data.name, data.email, data.password)
+  const signUp = useCallback(async (data: SignUpData) => {
+    await register(data.name, data.email, data.password)
   }, [])
 
   const signOut = useCallback(() => {
-    setUser(null);
-    setToken(null);
+    setAuthSession(null);
     setAuthToken(null);
     clearPersistedAuthSession();
   }, []);
@@ -154,15 +74,17 @@ export function AuthProvider({ children }: PropsWithChildren) {
     const expirationTime = getJwtExpirationTime(token);
 
     if (!expirationTime) {
-      signOut();
-      return;
+      const timeout = setTimeout(signOut, 0);
+
+      return () => clearTimeout(timeout);
     }
 
     const timeUntilExpiration = expirationTime - Date.now();
 
     if (timeUntilExpiration <= 0) {
-      signOut();
-      return;
+      const timeout = setTimeout(signOut, 0);
+
+      return () => clearTimeout(timeout);
     }
 
     const timeout = setTimeout(signOut, timeUntilExpiration);

@@ -76,6 +76,11 @@ export const makeSharedStyles = (theme: Theme) => StyleSheet.create({
         gap: 10,
         borderRadius: 20,
     },
+    categoryList: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 12,
+    },
     categoryColor: {
         width: 10,
         height: 10,

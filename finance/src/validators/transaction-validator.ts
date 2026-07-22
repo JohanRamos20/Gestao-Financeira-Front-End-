@@ -25,6 +25,7 @@ const apiTransactionTypeSchema = z
 
 const apiTransactionSchema = z
     .object({
+        id: z.string().optional(),
         name: z.string(),
         amount: z.coerce.number(),
         category: apiCategorySchema,
@@ -33,7 +34,7 @@ const apiTransactionSchema = z
     })
     .transform((transaction): Transaction => {
         return {
-            id: `${transaction.name}-${transaction.amount}-${transaction.transactionType}-${transaction.category}-${transaction.createdAt.getTime()}`,
+            id: transaction.id ?? `${transaction.name}-${transaction.amount}-${transaction.transactionType}-${transaction.category}-${transaction.createdAt.getTime()}`,
             name: transaction.name,
             value: transaction.amount,
             category: transaction.category,

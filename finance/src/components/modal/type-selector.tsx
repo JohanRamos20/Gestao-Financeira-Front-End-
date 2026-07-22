@@ -2,10 +2,9 @@ import { useTheme } from "@/providers/theme-provider"
 import { makeSharedStyles } from "@/styles/shared-styles"
 import { useEffect, useMemo, useState } from "react"
 import { Animated, Pressable, Text, View } from "react-native"
+import type { TransactionType } from "@/types/transaction"
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
-
-export type TransactionType = 'debit' | 'credit'
 
 export type TypeSelectorProps = {
     value : TransactionType

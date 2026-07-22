@@ -1,6 +1,5 @@
-import { Category } from "@/types/transaction";
+import { Category, type TransactionType } from "@/types/transaction";
 import { api } from "./api";
-import { TransactionType } from "@/components/modal/type-selector";
 import { parseTransactionsResponse } from "@/validators/transaction-validator";
 
 type Filter = {

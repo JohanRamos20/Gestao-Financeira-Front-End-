@@ -7,6 +7,8 @@ export enum Category {
   Salary = 'Salary',
 }
 
+export type TransactionType = 'debit' | 'credit'
+
 export const CATEGORIES = Object.values(Category) as Category[];
 
 export type Transaction = {
@@ -15,5 +17,5 @@ export type Transaction = {
   date: Date;
   value: number;
   category: Category;
-  type: 'debit' | 'credit';
+  type: TransactionType
 }

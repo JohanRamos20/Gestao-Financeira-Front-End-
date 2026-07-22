@@ -4,6 +4,9 @@ import { StyleSheet } from 'react-native';
 type Theme = ReturnType<typeof useTheme>;
 
 export const makeDashboardStyles = (theme: Theme) => StyleSheet.create({
+  scrollView: {
+    flex: 1,
+  },
   wrapper: {
     flex: 1,
     width: '100%',
@@ -24,6 +27,9 @@ export const makeDashboardStyles = (theme: Theme) => StyleSheet.create({
     borderRadius: 30,
     padding: 25,
     gap: 50,
+  },
+  header: {
+    minHeight: 400,
   },
   containersRow: {
     width: '100%',
@@ -83,6 +89,14 @@ export const makeDashboardStyles = (theme: Theme) => StyleSheet.create({
     width: '95%',
     flexDirection: 'column',
     gap: 20,
+  },
+  transactionsSection: {
+    flex: 2,
+    minHeight: 100,
+  },
+  goalsSection: {
+    flex: 1,
+    minHeight: 100,
   },
   containersColumn: {
     width: '95%',

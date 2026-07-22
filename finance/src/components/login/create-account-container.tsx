@@ -6,6 +6,8 @@ import { Link, router } from 'expo-router';
 import { useMemo, useState } from 'react';
 import { Pressable, Text, View } from 'react-native';
 import { useAuth } from '@/providers/auth-provider'
+import { ModalError } from '@/components/modal/modal-error';
+import { getErrorMessage } from '@/utils/get-error-message';
 
 export function CreateAccountContainer() {
     const { signUp } = useAuth()
@@ -13,8 +15,23 @@ export function CreateAccountContainer() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
     const theme = useTheme();
     const styles = useMemo(() => makeLoginStyles(theme), [theme]);
+
+    async function handleSignUp() {
+        if (password !== confirmPassword) {
+            setErrorMessage('As senhas precisam ser iguais.');
+            return;
+        }
+
+        try {
+            await signUp({ name, email, password });
+            router.replace('/login');
+        } catch (error) {
+            setErrorMessage(getErrorMessage(error));
+        }
+    }
 
     return (
         <View style={styles.loginContainer}>
@@ -26,13 +43,7 @@ export function CreateAccountContainer() {
             <TextInput label="E-mail" placeholder="seu@email.com" onChangeText={setEmail} value={email} style={styles.inputText} font={{ fontSize: 14 }} keyboardType="email-address"></TextInput>
             <TextInput label="Senha" placeholder="••••••••" onChangeText={setPassword} value={password} style={styles.inputText} font={{ fontSize: 14 }} secureTextEntry={true}></TextInput>
             <TextInput label="Confirmar Senha" placeholder="••••••••" onChangeText={setConfirmPassword} value={confirmPassword} style={styles.inputText} font={{ fontSize: 14 }} secureTextEntry={true}></TextInput>
-            <Button onPress={async () => {
-                if (password !== confirmPassword) {
-                    return
-                }
-                await signUp({ name, email, password })
-                router.replace('/login')
-            }} label="Criar conta" style={styles.button} contentStyle={{ fontSize: 14, color: '#FFF' }}></Button>
+            <Button onPress={handleSignUp} label="Criar conta" style={styles.button} contentStyle={{ fontSize: 14, color: '#FFF' }}></Button>
             <View style={styles.signupRow}>
                 <Text>
                     Já tem conta?
@@ -45,6 +56,14 @@ export function CreateAccountContainer() {
                     </Pressable>
                 </Link>
             </View>
+            <ModalError
+                visible={!!errorMessage}
+                title="Erro ao criar conta"
+                message={errorMessage}
+                variant="error"
+                buttonLabel="Entendi"
+                onClose={() => setErrorMessage('')}
+            />
         </View>
     );
 }

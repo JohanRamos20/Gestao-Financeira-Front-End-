@@ -6,14 +6,26 @@ import { useMemo, useState } from 'react';
 import { makeLoginStyles } from '@/styles/login-styles';
 import { TextInput } from '@/components/modal/text-input';
 import { Link } from 'expo-router';
+import { ModalError } from '@/components/modal/modal-error';
+import { getErrorMessage } from '@/utils/get-error-message';
 
 
 export function LoginContainer() {
     const { signIn } = useAuth();
     const [ email, setEmail ] = useState('')
     const [ password, setPassword ] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')
     const theme = useTheme()
     const styles = useMemo(() => makeLoginStyles(theme), [theme])
+
+    async function handleSignIn() {
+        try {
+            await signIn({ email, password })
+        } catch (error) {
+            setErrorMessage(getErrorMessage(error))
+        }
+    }
+
     return(
         <View style={styles.loginContainer}>
             <View>
@@ -27,7 +39,7 @@ export function LoginContainer() {
                     Esqueceu a senha?
                 </Text>
             </Pressable>
-            <Button onPress={() => signIn({email, password})} label='Entrar' style={styles.button} contentStyle={{ fontSize: 14, color: '#FFF' }}></Button>
+            <Button onPress={handleSignIn} label='Entrar' style={styles.button} contentStyle={{ fontSize: 14, color: '#FFF' }}></Button>
             <View style={styles.signupRow}>
                 <Text>
                     Não tem conta?
@@ -40,6 +52,14 @@ export function LoginContainer() {
                     </Pressable>
                 </Link>
             </View>
+            <ModalError
+                visible={!!errorMessage}
+                title="Erro ao entrar"
+                message={errorMessage}
+                variant="error"
+                buttonLabel="Entendi"
+                onClose={() => setErrorMessage('')}
+            />
         </View>
     )
 }

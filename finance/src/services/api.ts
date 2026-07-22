@@ -1,24 +1,44 @@
-let authToken: string | null = null;
+import { getAuthToken } from '@/features/auth/auth-token';
 
-export function setAuthToken(token: string | null) {
-  authToken = token;
+export class ApiError extends Error {
+  constructor(
+    message: string,
+    public status?: number,
+    public data?: unknown,
+  ) {
+    super(message);
+    this.name = 'ApiError';
+  }
 }
 
 export async function api(path: string, options?: RequestInit) {
-  const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}${path}`, {
-    ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
-      ...options?.headers,
-    },
-  });
+  let response: Response;
+  const authToken = getAuthToken();
+
+  try {
+    response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}${path}`, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
+        ...options?.headers,
+      },
+    });
+  } catch {
+    throw new ApiError(
+      'Nao foi possivel conectar a API. Verifique sua internet e tente novamente.',
+    );
+  }
 
   const text = await response.text();
   const data = text ? JSON.parse(text) : null;
 
   if (!response.ok) {
-    throw new Error(data?.message || `Erro na requisicao ${response.status} em ${path}`);
+    throw new ApiError(
+      data?.message || `Erro na requisicao ${response.status} em ${path}`,
+      response.status,
+      data,
+    );
   }
 
   return data;

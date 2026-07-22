@@ -1,4 +1,3 @@
-import { Transaction } from '../types/transaction';
 import { PieChartProps } from '@/components/dashboard/pie-chart';
 
 type ChartColors = {

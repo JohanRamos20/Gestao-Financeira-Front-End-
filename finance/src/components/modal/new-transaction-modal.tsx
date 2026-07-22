@@ -4,24 +4,22 @@ import { View, Text, Modal, Pressable, ScrollView } from 'react-native'
 import { makeLayoutStyles } from "@/styles/layout-styles"
 import { TextInput } from "./text-input"
 import { X } from 'lucide-react-native'
-import { TransactionType, TypeSelector } from "./type-selector"
-import { Category } from "@/types/transaction"
+import { TypeSelector } from "./type-selector"
+import { Category, type TransactionType } from "@/types/transaction"
 import { CategorySelector } from "./category-selector"
 import { Button } from "../button"
 import { ModalError } from "./modal-error"
 import { SanitizeNumericInput } from "@/handler/sanitize-numeric-input"
-
-export type NewTransactionData = {
-    name: string,
-    value: number,
-    category: Category,
-    type: TransactionType,
-}
+import { getErrorMessage } from "@/utils/get-error-message"
+import {
+    newTransactionSchema,
+    type NewTransactionData,
+} from "@/features/transactions/validators/new-transaction-validator"
 
 type NewTransactionProps = {
     visible: boolean,
     onClose: () => void,
-    onSubmit: (transaction: NewTransactionData) => void,
+    onSubmit: (transaction: NewTransactionData) => Promise<void> | void,
 }
 
 export function NewTransactionModal({ visible, onClose, onSubmit }: NewTransactionProps) {
@@ -40,23 +38,27 @@ export function NewTransactionModal({ visible, onClose, onSubmit }: NewTransacti
         setCategory(Category.Expenses)
     }
 
-    function handleSubmit() {
+    async function handleSubmit() {
         const numericValue = Number(value.replace(',', '.'))
-
-        if(name.length < 3){
-            setErrorMessage('O nome deve possuir pelo menos 3 caracteres.')
-            return
-        }
-
-        onSubmit({
-            name: name.trim(),
+        const transaction = newTransactionSchema.safeParse({
+            name,
             value: numericValue,
             category,
             type,
         })
 
-        resetForm()
-        onClose()
+        if (!transaction.success) {
+            setErrorMessage(transaction.error.issues[0]?.message ?? 'Dados invalidos.')
+            return
+        }
+
+        try {
+            await onSubmit(transaction.data)
+            resetForm()
+            onClose()
+        } catch (error) {
+            setErrorMessage(getErrorMessage(error))
+        }
     }
 
     function handleCancel() {
@@ -74,12 +76,12 @@ export function NewTransactionModal({ visible, onClose, onSubmit }: NewTransacti
             >
                 <Pressable style={[styles.overlay, { cursor: 'auto' } as any]} onPress={handleCancel}>
                     <Pressable onPress={(e) => e.stopPropagation()} style={[styles.modalContainer, { cursor: 'auto' }]}>
-                        <ScrollView contentContainerStyle={{ gap: 20, flexGrow: 1 }} showsVerticalScrollIndicator={false}>
-                            <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+                        <ScrollView contentContainerStyle={styles.modalScrollContent} showsVerticalScrollIndicator={false}>
+                            <View style={styles.modalHeader}>
                                 <Text style={styles.title}>
                                     New Transaction
                                 </Text>
-                                <Pressable onPress={handleCancel} style={{ width: 30, alignItems: 'center', justifyContent: 'center', borderRadius: 30, backgroundColor: theme.surfaceSoft }}>
+                                <Pressable onPress={handleCancel} style={styles.modalCloseButton}>
                                     <X color={theme.textSecondary} />
                                 </Pressable>
                             </View>
@@ -87,9 +89,9 @@ export function NewTransactionModal({ visible, onClose, onSubmit }: NewTransacti
                             <TextInput font={{color:theme.textSecondary}} label="Valor" prefix='R$' placeholder="0,00" value={value} onChangeText={(text) => setValue(SanitizeNumericInput(text))} keyboardType="decimal-pad"></TextInput>
                             <TypeSelector label="Tipo" value={type} onChange={setType}></TypeSelector>
                             <CategorySelector label='Categoria' value={category} onChange={setCategory} />
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 'auto' }}>
-                                <Button label="Cancelar" onPress={handleCancel} style={{ backgroundColor: 'transparent', borderWidth: 1, borderColor: theme.border }} contentStyle={{ color: theme.textSecondary }} />
-                                <Button label="Salvar Transacao" onPress={handleSubmit} style={{ backgroundColor: theme.primary }} contentStyle={{ color: "#FFF" }} />
+                            <View style={styles.modalActions}>
+                                <Button label="Cancelar" onPress={handleCancel} style={styles.secondaryButton} contentStyle={styles.secondaryButtonText} />
+                                <Button label="Salvar Transacao" onPress={handleSubmit} style={styles.primaryButton} contentStyle={styles.primaryButtonText} />
                             </View>
                         </ScrollView>
                     </Pressable>

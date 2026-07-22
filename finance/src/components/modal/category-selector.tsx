@@ -19,7 +19,7 @@ export function CategorySelector(props : CategorySelectorProps) {
             <Text style = {[styles.label,]}>
                 {props.label}
             </Text>
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12 }}>
+            <View style={styles.categoryList}>
                 {CATEGORIES.map((category) => (
                     <CategoryCard
                         key={category}
